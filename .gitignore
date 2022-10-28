@@ -1,3 +1,6 @@
 venv/
 .DS_Store
 secrets.json
+*.pyc
+__pycache__/
+*.sqlite3
