@@ -21,19 +21,22 @@
 
 			function initTmap() {
 				// 1. 지도 띄우기
-				map = new Tmapv2.Map("map_div", {
-					center : new Tmapv2.LatLng(37.49241689559544, 127.03171389453507),
-					width : "100%",
-					height : "400px",
-					zoom : 11,
-					zoomControl : true,
-					scrollwheel : true
-				});
         function onGeoOkay(position) {
         const sx = position.coords.latitude;
         const sy = position.coords.longitude;
+		const ey = document.querySelector('#endx').innerText
+		const ex = document.querySelector('#endy').innerText
+		console.log(ex, ey)
         // 2. 시작, 도착 심볼찍기
 				// 시작
+				map = new Tmapv2.Map("map_div", {
+					center : new Tmapv2.LatLng(sx, sy),
+					width : "100%",
+					height : "400px",
+					zoom : 16,
+					zoomControl : true,
+					scrollwheel : true
+				});
         marker_s = new Tmapv2.Marker(
 						{
 							position : new Tmapv2.LatLng(sx,
@@ -45,8 +48,8 @@
         //도착
         marker_e = new Tmapv2.Marker(
 						{
-							position : new Tmapv2.LatLng(35.15792306706579,
-              129.18232201384146),
+							position : new Tmapv2.LatLng(Number(ey),
+              Number(ex)),
 							icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
 							iconSize : new Tmapv2.Size(24, 38),
 							map : map
@@ -73,8 +76,8 @@
 													"appKey" : "l7xxa1779b4666934552abc78240dd79258e",
 													"startX" : String(sy),
 													"startY" : String(sx),
-													"endX" : "129.18232201384146",
-													"endY" : "35.15792306706579",
+													"endX" : ex,
+													"endY" : ey,
 													"reqCoordType" : "WGS84GEO",
 													"resCoordType" : "EPSG3857",
 													"searchOption" : searchOption,
@@ -435,9 +438,12 @@
         }
         navigator.geolocation.getCurrentPosition(onGeoOkay, onGeoError);
 			}
+		
 		</script>
 	</head>
 	<body onload="initTmap();">
+		<p style="display: none;" id="endx">{{endx}}</p>
+		<p style="display: none;" id="endy">{{endy}}</p>
 		<div class="ft_area">
 			<div class="ft_select_wrap">
 				<div class="ft_select">
@@ -468,7 +474,6 @@
 		<div class="map_act_btn_wrap clear_box"></div>
 		<p id="result"></p>
 		<br />
-    <button id = "find-me">Show my location</button><br/>
     <p id = "status"></p>
     <a id = "map-link" target="_blank"></a>
 	</body>

@@ -71,9 +71,9 @@ function initTmap(){
 						title : name,
 						map:map
 				 	});
-					
-					innerHtml += "<li><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span>"+name+"</span></li>";
-					
+					var temp = `<a href="{% url 'tests:test1' dnleh='startx' rudeh='starty' %}"><li><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_${k}.png' style='vertical-align:middle;'/><span>${name}</span></li></a>`.replace('startx', lat)
+					temp = temp.replace('starty', lon)
+					innerHtml += temp
 					markerArr.push(marker);
 					positionBounds.extend(markerPosition);	// LatLngBounds의 객체 확장
 				}
