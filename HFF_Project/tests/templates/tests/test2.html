@@ -6,6 +6,7 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script
 	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxa1779b4666934552abc78240dd79258e"></script>
+	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=eeb2fbb265ac7bbbf879417bb0a64e60"></script>
 <script type="text/javascript">
 
 var map, marker;
@@ -71,6 +72,24 @@ function initTmap(){
 						title : name,
 						map:map
 				 	});
+					 marker.addListener("click", function(evt) {
+						var roadviewContainer = document.getElementById('roadview'); 
+						var rvPosition = new kakao.maps.LatLng(lat, lon);
+						var roadview = new kakao.maps.Roadview(roadviewContainer, {
+							panoId : 1023434522, // 로드뷰 시작 지역의 고유 아이디 값
+							panoX : lon.toFixed(5), // panoId가 유효하지 않을 경우 지도좌표를 기반으로 데이터를 요청할 수평 좌표값
+							panoY : lat.toFixed(5), // panoId가 유효하지 않을 경우 지도좌표를 기반으로 데이터를 요청할 수직 좌표값
+							pan: 347.53292108158706, // 로드뷰 처음 실행시에 바라봐야 할 수평 각
+							tilt: -5.882449649001653, // 로드뷰 처음 실행시에 바라봐야 할 수직 각
+							zoom: 1 // 로드뷰 줌 초기값
+						}); 
+						// 로드뷰 지도 좌표 변화 이벤트를 등록한다
+						kakao.maps.event.addListener(roadview, 'position_changed', function() {
+							console.log('로드뷰 좌표가 변경되었습니다');
+							console.log(lat, lon)
+						});
+					});
+					
 					var temp = `<a href="{% url 'tests:test1' dnleh='startx' rudeh='starty' %}"><li><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_${k}.png' style='vertical-align:middle;'/><span>${name}</span></li></a>`.replace('startx', lat)
 					temp = temp.replace('starty', lon)
 					innerHtml += temp
@@ -108,6 +127,7 @@ function initTmap(){
 			</div>
 		</div>
 		<div id="map_div" class="map_wrap" style="float:left"></div>
+		<div id="roadview" style="width:750px;height:350px;"></div>
 	</div>
 </body>
 </html>
